@@ -1,0 +1,9 @@
+Author: Shea Ryan 
+
+binModule.py contains a Bin class for packing items, as well as functions for getting the bin capacity and volumes/weights of items from the user
+
+binpacking.py has a true (exponential time) implementation of the Bin Packing problem
+
+binpackingFF.py has an implementation of the first-fit approximation algorithm for Bin Packing
+
+Both algorithms output the number of bins used and a configuration of the items that will use that number of bins
