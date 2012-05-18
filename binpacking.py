@@ -16,7 +16,8 @@ print "\n\n"
 # Get the capacity for the bins from the user
 cap = binModule.getCap()
 items = binModule.getItems()
-
+items = sorted(items)
+bigItem = items.pop() # We can reduce time by a factor of 2 by always putting the same item in bin0
 maxBins = len(items)
 minBins = int(math.ceil(sum(items)/cap))
 curMin = maxBins + 1
@@ -27,8 +28,8 @@ print "MIN number of bins feasible:", int(minBins), "\nMAX number of bins (i.e. 
 
 # Iterate through the permutations of the items
 for x in itertools.permutations(items):
-	bins = []							# Clear the list of bins out after each new permuatation
-	Binny = Bin(cap, [])	# A bin to begin your packing
+	bins = []										# Clear the list of bins out after each new permuatation
+	Binny = Bin(cap, [bigItem])	# A bin to begin your packing
 	bins.append(Binny)
 	# Iterate through each item in this permutation
 	for item in x:						
@@ -56,5 +57,6 @@ for x in itertools.permutations(items):
 	if len(bins) == minBins:
 		break
 
+items.append(bigItem)
 print "True Bin Packing for", items, "with capacity", cap, "used", curMin, "bins"
 print "A configuration that worked was:", config
