@@ -9,23 +9,25 @@ import itertools	# for permutation iterator
 import copy				# for deepcopying Bins
 import sys				# for exit
 import binModule
+from time import clock, time # for timing
 from binModule import Bin
 
 print "\n\n"
 
 # Get the capacity for the bins from the user
 cap = binModule.getCap()
-items = binModule.getItems()
-items = sorted(items)
+allItems = binModule.getItems()
+items = sorted(allItems)
 bigItem = items.pop() # We can reduce time by a factor of 2 by always putting the same item in bin0
-maxBins = len(items)
-minBins = int(math.ceil(sum(items)/cap))
+maxBins = len(allItems)
+minBins = int(math.ceil(sum(allItems)/cap))
 curMin = maxBins + 1
 config = []
 
-print "Your items are:", items, "\nYour bins have capacity", cap, "\n"
+print "Your items are:", allItems, "\nYour bins have capacity", cap, "\n"
 print "MIN number of bins feasible:", int(minBins), "\nMAX number of bins (i.e. # items)", maxBins, "\n\n"
 
+t1 = clock()
 # Iterate through the permutations of the items
 for x in itertools.permutations(items):
 	bins = []										# Clear the list of bins out after each new permuatation
@@ -57,6 +59,8 @@ for x in itertools.permutations(items):
 	if len(bins) == minBins:
 		break
 
+t2 = clock()
+print t2-t1
 items.append(bigItem)
 print "True Bin Packing for", items, "with capacity", cap, "used", curMin, "bins"
 print "A configuration that worked was:", config

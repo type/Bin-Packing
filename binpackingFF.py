@@ -2,6 +2,7 @@
 import math
 import sys
 import binModule
+from time import time, clock
 from binModule import Bin
 
 print "\n\n"
@@ -21,6 +22,7 @@ print "MIN number of bins feasible:", int(minBins), "\nMAX number of bins (i.e. 
 
 bins.append(Bin(cap, [])) # we need at least one bin to begin
 
+t1 = clock()
 for item in items:
 	# Add the item to the first bin that can hold it
 	# If no bin can hold it, make a new bin
@@ -33,6 +35,9 @@ for item in items:
 			break
 		if bins.index(xBin) == len(bins) - 1:
 			bins.append(Bin(cap, []))
+
+t2 = clock()
+print t2 - t1
 
 print "First-fit algorithm for", items, "with capacity", cap, "used", len(bins), "bins"
 print "The configuration was", bins

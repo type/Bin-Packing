@@ -2,6 +2,7 @@
 import math
 import sys
 import binModule
+from time import time, clock
 from binModule import Bin
 
 print "\n\n"
@@ -21,6 +22,7 @@ print "MIN number of bins feasible:", int(minBins), "\nMAX number of bins (i.e. 
 
 bins.append(Bin(cap, [])) # we need at least one bin to begin
 
+t1 = clock()
 items = sorted(items)			# sort ascending
 
 for item in reversed(items): #iterate through the list backwards
@@ -35,6 +37,9 @@ for item in reversed(items): #iterate through the list backwards
 			break
 		if bins.index(xBin) == len(bins) - 1:
 			bins.append(Bin(cap, []))
+
+t2 = clock()
+print t2-t1
 
 print "First-fit Decreasing algorithm for", items, "with capacity", cap, "used", len(bins), "bins"
 print "The configuration was", bins
