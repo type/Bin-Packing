@@ -27,40 +27,65 @@ config = []
 print "Your items are:", allItems, "\nYour bins have capacity", cap, "\n"
 print "MIN number of bins feasible:", int(minBins), "\nMAX number of bins (i.e. # items)", maxBins, "\n\n"
 
-t1 = clock()
-# Iterate through the permutations of the items
-for x in itertools.permutations(items):
-	bins = []										# Clear the list of bins out after each new permuatation
-	Binny = Bin(cap, [bigItem])	# A bin to begin your packing
-	bins.append(Binny)
-	# Iterate through each item in this permutation
-	for item in x:						
-		# Don't bother finding out how to fit items if it's not better
-		if len(bins) >= curMin:
-			break
-		if item > cap:
-			print "SOME ITEM WON'T EVEN FIT IN ITS OWN BIN! ABORTING"
-			sys.exit()
-		# Still room in this bin? 
-		if Binny.capacity - sum(Binny.contents) >= item:
-			Binny.add(item)
-		# No...we need a fresh bin
-		else:
-			Binny = Bin(cap, [])
-			Binny.add(item)
-			bins.append(Binny)
-	# We've put all the items in the perm into bins...
-	# If we've reached a new minimum of bins used, save the
-	# minimum and keep a "proof" copy of the configuration that worked
-	if len(bins) < curMin:
-		curMin = len(bins)
-		config = copy.deepcopy(bins)
-	# If we used the true minimum number of bins, we're definitely done
-	if len(bins) == minBins:
-		break
+def easyCase(aList):
+	for item in aList:
+		if item < cap/2:
+			return False
+	return True
 
+def checkInput(aList):
+	for item in aList:
+		if item > cap:
+				print "SOME ITEM WON'T EVEN FIT IN ITS OWN BIN! ABORTING"
+				sys.exit()
+
+# Begin timing
+t1 = clock()
+
+# Make sure no item is too large
+checkInput(allItems)
+
+# Check if we're in the case where all items need their own bins
+if easyCase(allItems):
+	print "Easy case"
+	curMin = len(allItems)
+	for item in allItems:
+		config.append([item])
+
+else:
+	# Iterate through the permutations of the items
+	for x in itertools.permutations(items):
+		bins = []										# Clear the list of bins out after each new permuatation
+		Binny = Bin(cap, [bigItem])	# A bin to begin your packing
+		bins.append(Binny)
+		# Iterate through each item in this permutation
+		for item in x:						
+			# Don't bother finding out how to fit items if it's not better
+			if len(bins) >= curMin:
+				break
+			# Still room in this bin? 
+			if Binny.capacity - sum(Binny.contents) >= item:
+				Binny.add(item)
+			# No...we need a fresh bin
+			else:
+				Binny = Bin(cap, [])
+				Binny.add(item)
+				bins.append(Binny)
+		# We've put all the items in the perm into bins...
+		# If we've reached a new minimum of bins used, save the
+		# minimum and keep a "proof" copy of the configuration that worked
+		if len(bins) < curMin:
+			curMin = len(bins)
+			config = copy.deepcopy(bins)
+		# If we used the true minimum number of bins, we're definitely done
+		if len(bins) == minBins:
+			break
+
+# End timing
 t2 = clock()
 print t2-t1
+
+# Put the item we removed back in so it looks pretty
 items.append(bigItem)
 print "True Bin Packing for", items, "with capacity", cap, "used", curMin, "bins"
 print "A configuration that worked was:", config

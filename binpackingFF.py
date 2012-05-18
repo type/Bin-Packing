@@ -12,7 +12,6 @@ cap = binModule.getCap()
 # Get the items from the user
 items = binModule.getItems()
 
-
 maxBins = len(items)
 minBins = int(math.ceil(sum(items)/cap))
 bins = []
