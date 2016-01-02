@@ -7,6 +7,8 @@ class Bin:
 		self.contents.append(x)
 	def __repr__(self):
 		return str(self.contents)
+	def free_capacity(self):
+		return self.capacity - sum(self.contents)
 
 def getCap():
 	while True:

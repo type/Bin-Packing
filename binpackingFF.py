@@ -29,14 +29,24 @@ for item in items:
 		print "SOME ITEM WON'T EVEN FIT IN ITS OWN BIN! ABORTING"
 		sys.exit()
 	for xBin in bins:
-		if xBin.capacity - sum(xBin.contents) >= item:
+		if xBin.free_capacity() >= item:
 			xBin.add(item)
 			break
 		if bins.index(xBin) == len(bins) - 1:
 			bins.append(Bin(cap, []))
 
 t2 = clock()
-print t2 - t1
+print "Algorithm runtime (s):", t2 - t1
+
+remaining = [xBin.free_capacity() for xBin in bins]
+capacity_left = sum(remaining)
+capacity_total = sum([xBin.capacity for xBin in bins])
+capacity_used = capacity_total - capacity_left
 
 print "First-fit algorithm for", items, "with capacity", cap, "used", len(bins), "bins"
 print "The configuration was", bins
+print "Capacity remaining per bin: ", remaining
+print "Total capacity used:", capacity_used
+print "Total capacity remaining: ", capacity_left
+print "Efficiency (%): ", 100 * (1 - capacity_left/float(capacity_total))
+

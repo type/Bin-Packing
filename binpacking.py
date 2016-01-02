@@ -64,7 +64,7 @@ else:
 			if len(bins) >= curMin:
 				break
 			# Still room in this bin? 
-			if Binny.capacity - sum(Binny.contents) >= item:
+			if Binny.free_capacity() >= item:
 				Binny.add(item)
 			# No...we need a fresh bin
 			else:
@@ -83,9 +83,18 @@ else:
 
 # End timing
 t2 = clock()
-print t2-t1
+print "Algorithm runtime (s):", t2-t1
+
+remaining = [xBin.free_capacity() for xBin in bins]
+capacity_left = sum(remaining)
+capacity_total = sum([xBin.capacity for xBin in bins])
+capacity_used = capacity_total - capacity_left
 
 # Put the item we removed back in so it looks pretty
 items.append(bigItem)
 print "True Bin Packing for", items, "with capacity", cap, "used", curMin, "bins"
 print "A configuration that worked was:", config
+print "Capacity remaining per bin: ", remaining
+print "Total capacity used:", capacity_used
+print "Total capacity remaining: ", capacity_left
+print "Efficiency (%): ", 100 * (1 - capacity_left/float(capacity_total))
